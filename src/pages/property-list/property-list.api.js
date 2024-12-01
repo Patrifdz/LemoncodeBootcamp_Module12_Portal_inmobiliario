@@ -1,0 +1,1 @@
+import { inputName } from 'file';
