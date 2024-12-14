@@ -15,6 +15,18 @@ locationUrl: string,
 }
 */
 
+const getEquipments = (propertyEquipments, listEquipments) => {
+    let mainEquipments = [ ];
+    propertyEquipments.forEach( id => {
+        listEquipments.forEach( equipment => {
+            if(id === equipment.id) {
+                mainEquipments.push(equipment.name)
+            }
+        })
+    })
+    return mainEquipments;
+}
+
 export const mapPropertyDetailFromApiToViewModel = (property, equipments) => {
     return {
         mainImage: Array.isArray(property.images) ? property.images[0] : '',
@@ -27,20 +39,10 @@ export const mapPropertyDetailFromApiToViewModel = (property, equipments) => {
         notes: property.notes,
         locationUrl: property.locationUrl,
         mainFeatures: property.mainFeatures,
-        equipments: getEquipments(property.mainEquipments, equipments),
+        equipments: getEquipments(property.equipmentIds, equipments),
         images: property.images,
     }
 }
 
-const getEquipments = (propertyEquipments, listEquipments) => {
-    let mainEquipments = [ ];
-    propertyEquipments.forEach( id => {
-        for( equipment of listEquipments) {
-            if(id === equipment.id) {
-                mainEquipments.push(equipment.name)
-            }
-        }
-    })
-    return mainEquipments;
-}
+
 
