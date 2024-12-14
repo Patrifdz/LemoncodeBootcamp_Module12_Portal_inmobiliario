@@ -138,7 +138,7 @@ a {
   -webkit-appearance: none;
   -moz-appearance: none;
   font-size: 0.9em;
-  text-align: right;
+  text-align: center;
 }
 
 .select select::-ms-expand {

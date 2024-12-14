@@ -14,27 +14,43 @@ export const mapPropertyListFromApiToViewModel = propertyList => {
     return propertyList.map( property => mapPropertyFromApiToViewModel(property));
 }
 
-const mapPropertyFromApiToViewModel = (property ) => {
+const mapPropertyFromApiToViewModel = ( property ) => {
         return {
             id: property.id,
-            tittle: property.tittle,
-            rooms: `${property.rooms}  ${getRoomPrice(property,rooms)}`,
+            title: property.title,
+            rooms: `${property.rooms}  ${getWord(property.rooms, 'habitación', 'habitaciones')}`,
             squareMeter: `${property.squareMeter} m2`,
-            // notes: `${getNotesLength(property.notes)}...`,
             notes: `${property.notes.substring(0,240)}...`,
             price: `${property.price.toLocaleString( )} €`,
-            image: Array.isArray(property.images) ? property.image[0] : '',
+            image: Array.isArray(property.images) ? property.images[0] : '',
         }
 }
 
-const getRoomWord = rooms => {
-    return rooms > 1 ? 'habitaciones' : 'habitación';
+export const getWord = (amount, singular, plural) => {
+    return amount > 1 ? plural : singular;
 };
 
-// const getNotesLength = notes => {
-//     const noteMap = '';
-//     for (let i = 0; notes.length < 241; i++) {
-//         noteMap.push(i)  
-//     }
-//     return noteMap;
-// }
+
+export const mapFilterToQueryParams = filter => {
+    let queryParams = '';
+    
+    if(filter.saleTypeId) {
+        queryParams = `${queryParams}saleypeIds_like=${filter.saleTypeId}&`;
+    }
+    if(filter.provinceId) {
+        queryParams = `${queryParams}provinceId=${filter.provinceId}&`;
+    }
+    if(filter.minRooms) {
+        queryParams =`${queryParams}rooms_gte=${filter.minRooms}&`;
+    }
+    if(filter.minBathRooms) {
+        queryParams = `${queryParams}bathrooms_gte=${filter.minBathRooms}&`;
+    }
+    if(filter.minPrice) {
+        queryParams = `${queryParams}price_gte=${filter.minPrice}&`;
+    }
+    if(filter.minPrice) {
+        queryParams = `${queryParams}price_lte=${filter.maxPrice}&`;
+    }
+    return queryParams.slice(0, -1);
+}
