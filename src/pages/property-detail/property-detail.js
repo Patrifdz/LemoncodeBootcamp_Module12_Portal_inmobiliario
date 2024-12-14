@@ -1,4 +1,4 @@
-import { history } from '../../core/router';
+import { history, routes } from '../../core/router';
 import { mapPropertyDetailFromApiToViewModel } from './property-detail.mapper';
 import { setPropertyValues } from './property-detail.helpers';
 import { getPropertyList, getEquipmentList, sendContactData } from './property-detail.api';
@@ -49,6 +49,7 @@ onSubmitForm('contact-button', ( ) => {
         onSetFormErrors(result);
         if(result.succeeded) {
             sendContactData(contactData).then( ( ) => {
+                {history.push(routes.propertyList)}
                 alert('Gracias por tu interés, en breve nos pondremos en contacto contigo');
             })
         }
