@@ -18,6 +18,11 @@ const validationSchema = {
         ],
         notes: [
             ...commonValidation,
+            {
+                validator: Validators.maxLength,
+                customArgs: { length: 20 },
+                message: 'La longitud máxima es {{length}}',
+            }
         ],
 }
 };
