@@ -1,14 +1,17 @@
 import Axios  from 'axios';
 
-const url = `${process.env.BASE_API_URL}/properties`;
+const url = {
+    properties: `${process.env.BASE_API_URL}/properties`,
+    saleTypes: `${process.env.BASE_API_URL}/saleTypes`,
+    provinces: `${process.env.BASE_API_URL}/provinces`,
+}
 
-export const getPropertyList = (queryParams ) => Axios.get(`${url}?${queryParams}`).then( response => {
+
+export const getPropertyList = (queryParams ) => Axios.get(`${url.properties}?${queryParams}`).then( response => {
     return response.data; });
 
-const saleTypeListUrl = `${process.env.BASE_API_URL}/saleTypes`;
 
-export const getSaleTypeList = ( ) =>  Axios.get(saleTypeListUrl).then(response => {  return response.data; });
+export const getSaleTypeList = ( ) =>  Axios.get(url.saleTypes).then(response => {  return response.data; });
 
-const provinceListUrl = `${process.env.BASE_API_URL}/provinces`;
 
-export const getProvinceList = ( ) => Axios.get(provinceListUrl).then( response => { return response.data; });
+export const getProvinceList = ( ) => Axios.get(url.provinces).then( response => { return response.data; });
