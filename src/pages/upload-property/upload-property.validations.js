@@ -1,53 +1,85 @@
 import { Validators, createFormValidation } from '@lemoncode/fonk';
+import { arrayRequired } from '@lemoncode/fonk-array-required-validator';
+import { isUrl } from '@lemoncode/fonk-is-url-validator';
 
-const commonValidation = [
-    {
-        validator: Validators.required,
-        message: 'Campo requerido',
-    }
-];
+const commonValidationFieldRequiered =  [
+            {
+                validator: Validators.required,
+                message: 'Campo requerido',
+            } 
+    ];
+
+    const commonValidationMaxLength = (amount ) => [
+        {
+            validator: Validators.maxLength,
+            customArgs: { length: amount },
+            message: 'La longitud máxima son {{length}} caracteres',
+        }
+    ];
 
 const validationSchema = {
     field: {
             title: [
-            ...commonValidation,
-        {
-            validator: Validators.maxLength,
-            customArgs: { length: 64 },
-            message: 'La longitud máxima son {{length}} caracteres',
-        }
+            ...commonValidationFieldRequiered,
+            ...commonValidationMaxLength(64),
         ],
         notes: [
-            ...commonValidation,
-            {
-            validator: Validators.maxLength,
-            customArgs: { length: 1000 },
-            message: 'La longitud máxima son {{length}} caracteres',
-            }
+            ...commonValidationFieldRequiered,
+            ...commonValidationMaxLength(1000),
         ],
         email: [
-            ...commonValidation,
+            ...commonValidationFieldRequiered,
             {
                 validator: Validators.email,
                 message: 'Email no válido',
             }
         ],
         phone: [
-            ...commonValidation,
+            ...commonValidationFieldRequiered,
             {
                 validator: Validators.pattern,
-                customArgs: { pattern: new RegExp(/^(6|7|8|9)\d{9}$/) },
+                customArgs: { pattern: new RegExp(/^(6|7|8|9)\d{8}$/) },
                 message: 'Teléfono no válido'
             }
         ],
         price: [
-            ...commonValidation,
+            ...commonValidationFieldRequiered,
             {
                 validator: Validators.pattern,
                 customArgs: { pattern: /^[+]?[1-9]\d*(\.\d+)?$/ },
                 message: 'El precio debe ser superior a cero'
             }
-        ]
+        ],
+        saleTypes: [
+            ...commonValidationFieldRequiered,
+            {
+                validator: arrayRequired.validator,
+                customArgs: { minLength: 1, maxLength: 4 },
+                message: 'Debe señalar al menos una de las opciones',
+            }
+        ],
+        address: [
+            ...commonValidationFieldRequiered,
+            ...commonValidationMaxLength(54),
+        ],
+        city: [
+            ...commonValidationFieldRequiered,
+            ...commonValidationMaxLength(24),
+        ],
+        provinceId:  commonValidationFieldRequiered,
+        squareMeter: commonValidationFieldRequiered,
+        rooms: commonValidationFieldRequiered,
+        bathrooms: commonValidationFieldRequiered,
+        locationUrl: [
+            ...commonValidationFieldRequiered,
+            {
+                validator: isUrl.validator,
+                message: 'La dirección url indicada no es correcta',
+              },
+        ], 
+        mainFeatures: commonValidationFieldRequiered,
+        equipmentId: commonValidationFieldRequiered,
+        images: commonValidationFieldRequiered,
     }
 };
 

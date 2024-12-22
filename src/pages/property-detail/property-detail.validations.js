@@ -16,12 +16,12 @@ const validationSchema = {
                 message: 'Email no válido',
             },
         ],
-        notes: [
+        message: [
             ...commonValidation,
             {
                 validator: Validators.maxLength,
-                customArgs: { length: 20 },
-                message: 'La longitud máxima es {{length}}',
+                customArgs: { length: 240 },
+                message: 'La longitud máxima son {{length}} caracteres',
             }
         ],
 }

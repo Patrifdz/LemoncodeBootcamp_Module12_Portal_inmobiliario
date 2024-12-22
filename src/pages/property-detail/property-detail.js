@@ -20,7 +20,7 @@ Promise.all ( [
 
 let contactData = {
     email: '',
-    notes: ''
+    message: ''
 };
 
 console.log(contactData);
@@ -38,9 +38,9 @@ onUpdateField('message', event => {
     const value = event.target.value;
     contactData = {
         ...contactData,
-        notes: value,
+        message: value,
     }
-    formValidation.validateField('message', contactData.notes).then((result) => onSetError('message', result))
+    formValidation.validateField('message', contactData.message).then((result) => onSetError('message', result))
 });
 
 onSubmitForm('contact-button', ( ) => {

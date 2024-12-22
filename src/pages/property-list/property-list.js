@@ -40,12 +40,6 @@ Promise.all ( [
     for(let i=0; i < selectList.length; i++) {
         setOptions(selectList[i], selectId[i], selectDefaultValue[i]);
     }
-    // setOptions(saleTypeList, 'select-sale-type', '¿Qué ventas?');
-    // setOptions(provinceList, 'select-province', '¿Dónde?');
-    // setOptions(roomOptions, 'select-room', '¿Habitaciones?');
-    // setOptions(bathroomOptions, 'select-bathroom', '¿Cuartos de baño?');
-    // setOptions(minPriceOptions, 'select-min-price', '¿Precio mínimo?');
-    // setOptions(maxPriceOptions, 'select-max-price', '¿Precio máximo?');
 })
 
 const loadPropertyList = propertyList => {
