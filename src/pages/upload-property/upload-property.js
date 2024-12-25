@@ -52,32 +52,36 @@ let newProperty = {
     bathrooms: '',
     locationUrl: '',
     mainFeatures: '',
-    equipmentId: '',
+    equipments: [ ],
     images: '',
 }
 
 
 const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'insert-feature-button', 'equipments', 'images'];
 
-
 fieldId.forEach( field => {
     onUpdateField(field, event => {
         const value = event.target.value;
-        console.log(event.target.id)
-        if(field === 'saleTypes') {
-            if(newProperty.saleTypes.indexOf(value) === -1) {
+        console.log(value)
+        if(field === 'saleTypes' || field === 'equipments') {
+            if(newProperty[field].indexOf(value) === -1) {
                 newProperty = {
                      ...newProperty,
-                     [field]: [...newProperty.saleTypes, value],
+                     [field]: [...newProperty[field], value],
                 } 
                 } else {
                     newProperty = {
                         ...newProperty,
-                        [field]: newProperty.saleTypes.filter( num => num !== value ),
+                        [field]: newProperty[field].filter( num => num !== value ),
                     }
                 }
              } else if (field === 'insert-feature-button') {
                 onAddFeature(newProperty.newFeature);
+                newProperty = {
+                    ...newProperty,
+                    [newProperty.mainFeatures]: value,
+                }
+                console.log(newProperty)
              } else {
             newProperty = {
                 ...newProperty,
@@ -89,21 +93,19 @@ fieldId.forEach( field => {
     })
     })
 })
-
+console.log(newProperty)
 onSubmitForm('save-button', () => {
     formValidation.validateForm(newProperty).then(result => {
+        console.log(result)
         onSetFormErrors(result);
 
         if (result.succeeded) {
-            // Primero, obtenemos la lista de propiedades
-            getPropertiesList().then(([propertiesList]) => {
-                // Luego, mapeamos la nueva propiedad y enviamos los datos a la API
-                console.log(propertiesList)
-                sendDataNewProperty(mapNewPropertyFromViewModelToApi(newProperty, propertiesList)).then(() => {
-                    // Después de enviar los datos con éxito, redirigimos a la lista de propiedades
-                    history.push(routes.propertyList);
-                    alert('Se ha añadido la propiedad con éxito');
-                });
+            // mapeamos la nueva propiedad y enviamos los datos a la API
+            sendDataNewProperty(mapNewPropertyFromViewModelToApi(newProperty)).then(() => {
+            // Después de enviar los datos con éxito, redirigimos a la lista de propiedades
+            history.push(routes.propertyList);
+            // Se lanza también un alert para avisar al usuario
+            alert('Se ha añadido la propiedad con éxito');
             });
         }
     });

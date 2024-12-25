@@ -2,6 +2,7 @@ import { Validators, createFormValidation } from '@lemoncode/fonk';
 import { arrayRequired } from '@lemoncode/fonk-array-required-validator';
 import { isUrl } from '@lemoncode/fonk-is-url-validator';
 
+
 const commonValidationFieldRequiered =  [
             {
                 validator: Validators.required,
@@ -51,7 +52,6 @@ const validationSchema = {
             }
         ],
         saleTypes: [
-            ...commonValidationFieldRequiered,
             {
                 validator: arrayRequired.validator,
                 customArgs: { minLength: 1, maxLength: 4 },
@@ -78,8 +78,13 @@ const validationSchema = {
               },
         ], 
         mainFeatures: commonValidationFieldRequiered,
-        equipmentId: commonValidationFieldRequiered,
-        images: commonValidationFieldRequiered,
+        equipments: [
+                {
+                    validator: arrayRequired.validator,
+                    customArgs: { minLength: 0, maxLength: 6 },
+                }
+            ],
+        // images: commonValidationFieldRequiered,
     }
 };
 
