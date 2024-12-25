@@ -51,18 +51,19 @@ let newProperty = {
     rooms: '',
     bathrooms: '',
     locationUrl: '',
-    mainFeatures: '',
+    mainFeatures: [ ],
     equipments: [ ],
     images: '',
 }
 
 
-const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'insert-feature-button', 'equipments', 'images'];
+const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'equipments', 'images'];
+
+const buttonId = ['insert-feature-button', 'save-button'];
 
 fieldId.forEach( field => {
     onUpdateField(field, event => {
         const value = event.target.value;
-        console.log(value)
         if(field === 'saleTypes' || field === 'equipments') {
             if(newProperty[field].indexOf(value) === -1) {
                 newProperty = {
@@ -75,13 +76,6 @@ fieldId.forEach( field => {
                         [field]: newProperty[field].filter( num => num !== value ),
                     }
                 }
-             } else if (field === 'insert-feature-button') {
-                onAddFeature(newProperty.newFeature);
-                newProperty = {
-                    ...newProperty,
-                    [newProperty.mainFeatures]: value,
-                }
-                console.log(newProperty)
              } else {
             newProperty = {
                 ...newProperty,
@@ -92,24 +86,48 @@ fieldId.forEach( field => {
         onSetError(field, result)
     })
     })
-})
-console.log(newProperty)
-onSubmitForm('save-button', () => {
-    formValidation.validateForm(newProperty).then(result => {
-        console.log(result)
-        onSetFormErrors(result);
-
-        if (result.succeeded) {
-            // mapeamos la nueva propiedad y enviamos los datos a la API
-            sendDataNewProperty(mapNewPropertyFromViewModelToApi(newProperty)).then(() => {
-            // Después de enviar los datos con éxito, redirigimos a la lista de propiedades
-            history.push(routes.propertyList);
-            // Se lanza también un alert para avisar al usuario
-            alert('Se ha añadido la propiedad con éxito');
-            });
-        }
-    });
 });
+
+buttonId.forEach( button => {
+    if(button === 'insert-feature-button') {
+        onSubmitForm(button, ( ) => {
+            const value = document.getElementById('newFeature').value;
+            onAddFeature(value);
+            newProperty = {
+            ...newProperty,
+            mainFeatures : [...newProperty.mainFeatures, value]
+        }
+        onSubmitForm( formatDeleteFeatureButtonId(value), ( ) => {
+            onRemoveFeature(value);
+            newProperty.mainFeatures = newProperty.mainFeatures.filter(feature => feature !== value);
+        })
+        console.log(newProperty.mainFeatures)
+        })
+    } else if (button === 'save-button') {
+        onSubmitForm(button, () => {
+            formValidation.validateForm(newProperty).then(result => {
+                console.log(result)
+                onSetFormErrors(result);
+        
+                if (result.succeeded) {
+                    // mapeamos la nueva propiedad y enviamos los datos a la API
+                    sendDataNewProperty(mapNewPropertyFromViewModelToApi(newProperty)).then(() => {
+                    // Después de enviar los datos con éxito, redirigimos a la lista de propiedades
+                    history.push(routes.propertyList);
+                    // Se lanza también un alert para avisar al usuario
+                    alert('Se ha añadido la propiedad con éxito');
+                    });
+                }
+            });
+        });
+    } 
+});
+
+
+
+
+
+
 
 
 
