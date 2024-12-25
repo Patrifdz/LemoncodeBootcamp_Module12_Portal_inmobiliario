@@ -20,14 +20,16 @@ newProperty {
     }
 */
 
-export const mapNewPropertyFromViewModelToApi = ( newProperty, listProperties ) => {
-    return {
+export const mapNewPropertyFromViewModelToApi = ( newProperty) => {
+    newProperty = {
         ...newProperty,
-        id: setId(listProperties),
         price: Number(newProperty.price),
+        equipmentId: newProperty.equipments,
     }
+    return newProperty.map( ({ newFeature, ...rest}) => rest ) 
 }
 
-const setId = (ListProperties) => {
-    return ListProperties.length + 1;
-}
+// He intentado machacar la propiedad 'id' que se genera automáticamente al crear la nueva propiedad, pero no me deja hacerlo. Quería asignarle un número que fuese continuación del número de id que tuviese la última propiedad de la lista. 
+// const setId = (ListProperties) => {
+//     return ListProperties.length + 1;
+// }
