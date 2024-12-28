@@ -53,41 +53,40 @@ let newProperty = {
     locationUrl: '',
     mainFeatures: [ ],
     equipments: [ ],
-    "add-image": '',
+    images: [ ],
 }
 
 
-const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'mainFeatures', 'equipments', 'add-image'];
+const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'mainFeatures', 'equipments', 'images'];
 
 const buttonId = ['insert-feature-button', 'save-button'];
 
 fieldId.forEach( field => {
     onUpdateField(field, event => {
         const value = event.target.value;
-        if(field === 'saleTypes' || field === 'equipments') {
-            if(newProperty[field].indexOf(value) === -1) {
-                newProperty = {
-                     ...newProperty,
-                     [field]: [...newProperty[field], value],
-                } 
-                } else {
+            if(field === 'saleTypes' || field === 'equipments') {
+                        if(newProperty[field].indexOf(value) === -1) {
+                        newProperty = {
+                            ...newProperty,
+                            [field]: [...newProperty[field], value],
+                        } 
+                        } else {
+                            newProperty = {
+                                ...newProperty,
+                                [field]: newProperty[field].filter( num => num !== value ),
+                            }
+                        }
+            }  else if (field !== 'add-image') {
                     newProperty = {
                         ...newProperty,
-                        [field]: newProperty[field].filter( num => num !== value ),
+                        [field]: value,
                     }
-                }
-             }  else if (field !== 'add-image') {
-            newProperty = {
-                ...newProperty,
-                [field]: value,
-            }
-        }   
-    if (field !== 'saleTypes') {
-        formValidation.validateField( field, value).then( result => {
-            onSetError(field, result)
-        })
-    } 
-    })
+            }   
+            if (field !== 'saleTypes') {
+                    formValidation.validateField( field, value).then( result => onSetError(field, result))
+            } 
+    });
+
     if(field === 'add-image') {
         onAddFile(field, value => {
         onAddImage(value);
@@ -123,6 +122,7 @@ buttonId.forEach( button => {
                 console.log(result)
                 onSetFormErrors(result);
                 console.log(newProperty)
+                console.log(mapNewPropertyFromViewModelToApi(newProperty))
         
                 if (result.succeeded) {
                     // mapeamos la nueva propiedad y enviamos los datos a la API

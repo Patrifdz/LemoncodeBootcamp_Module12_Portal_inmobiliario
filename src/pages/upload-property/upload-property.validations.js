@@ -70,7 +70,7 @@ const validationSchema = {
             ...commonValidationFieldRequiered,
             ...commonValidationMaxLength(24),
         ],
-        provinceId:  commonValidationFieldRequiered,
+        province:  commonValidationFieldRequiered,
         squareMeter: [
             ...commonValidationFieldRequiered,
             ...commonValidationGreaterZero,
@@ -100,7 +100,12 @@ const validationSchema = {
                     customArgs: { minLength: 0, maxLength: 6 },
                 }
             ],
-        // images: commonValidationFieldRequiered,
+        images: [
+            {
+                validator: arrayRequired.validator,
+                customArgs: { minLength: 1},
+            }
+        ],
     }
 };
 
