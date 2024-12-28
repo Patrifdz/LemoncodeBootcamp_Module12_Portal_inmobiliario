@@ -46,7 +46,7 @@ let newProperty = {
     saleTypes: [ ],
     address: '',
     city: '',
-    provinceId: '',
+    province: '',
     squareMeter: '',
     rooms: '',
     bathrooms: '',
@@ -57,7 +57,7 @@ let newProperty = {
 }
 
 
-const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'equipments', 'add-image'];
+const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'mainFeatures', 'equipments', 'add-image'];
 
 const buttonId = ['insert-feature-button', 'save-button'];
 
@@ -82,17 +82,21 @@ fieldId.forEach( field => {
                 [field]: value,
             }
         }   
-    formValidation.validateField( field, value).then( result => {
-        onSetError(field, result)
+    if (field !== 'saleTypes') {
+        formValidation.validateField( field, value).then( result => {
+            onSetError(field, result)
+        })
+    } 
     })
-    })
-    onAddFile(field, value => {
+    if(field === 'add-image') {
+        onAddFile(field, value => {
         onAddImage(value);
         newProperty = {
             ...newProperty,
             [field] : value,
         }
-    })
+        })
+    }
 });
 
 
@@ -101,16 +105,17 @@ buttonId.forEach( button => {
     if(button === 'insert-feature-button') {
         onSubmitForm(button, ( ) => {
             const value = document.getElementById('newFeature').value;
-            onAddFeature(value);
-            newProperty = {
-            ...newProperty,
-            mainFeatures : [...newProperty.mainFeatures, value]
-        }
-        onSubmitForm( formatDeleteFeatureButtonId(value), ( ) => {
-            onRemoveFeature(value);
-            newProperty.mainFeatures = newProperty.mainFeatures.filter(feature => feature !== value);
-        })
-        console.log(newProperty.mainFeatures)
+            if(value) {
+                onAddFeature(value);
+                newProperty = {
+                    ...newProperty,
+                    mainFeatures : [...newProperty.mainFeatures, value]
+                }
+                onSubmitForm( formatDeleteFeatureButtonId(value), ( ) => {
+                    onRemoveFeature(value);
+                    newProperty.mainFeatures = newProperty.mainFeatures.filter(feature => feature !== value);
+                })
+            }
         })
     } else if (button === 'save-button') {
         onSubmitForm(button, () => {

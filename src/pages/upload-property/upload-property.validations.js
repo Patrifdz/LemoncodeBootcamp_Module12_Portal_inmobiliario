@@ -4,11 +4,19 @@ import { isUrl } from '@lemoncode/fonk-is-url-validator';
 
 
 const commonValidationFieldRequiered =  [
-            {
-                validator: Validators.required,
-                message: 'Campo requerido',
-            } 
+        {
+            validator: Validators.required,
+            message: 'Campo requerido',
+        } 
     ];
+
+const commonValidationGreaterZero = [
+        {
+            validator: Validators.pattern,
+            customArgs: { pattern: /^[+]?[1-9]\d*(\.\d+)?$/ },
+            message: 'El número debe ser mayor que cero'
+        }
+];
 
     const commonValidationMaxLength = (amount ) => [
         {
@@ -45,17 +53,13 @@ const validationSchema = {
         ],
         price: [
             ...commonValidationFieldRequiered,
-            {
-                validator: Validators.pattern,
-                customArgs: { pattern: /^[+]?[1-9]\d*(\.\d+)?$/ },
-                message: 'El precio debe ser superior a cero'
-            }
+            ...commonValidationGreaterZero,
         ],
         saleTypes: [
             {
                 validator: arrayRequired.validator,
                 customArgs: { minLength: 1, maxLength: 4 },
-                message: 'Debe señalar al menos una de las opciones',
+                message: 'Debe marcar al menos una de las opciones',
             }
         ],
         address: [
@@ -67,7 +71,10 @@ const validationSchema = {
             ...commonValidationMaxLength(24),
         ],
         provinceId:  commonValidationFieldRequiered,
-        squareMeter: commonValidationFieldRequiered,
+        squareMeter: [
+            ...commonValidationFieldRequiered,
+            ...commonValidationGreaterZero,
+        ],
         rooms: commonValidationFieldRequiered,
         bathrooms: commonValidationFieldRequiered,
         locationUrl: [
@@ -77,7 +84,16 @@ const validationSchema = {
                 message: 'La dirección url indicada no es correcta',
               },
         ], 
-        mainFeatures: commonValidationFieldRequiered,
+        newFeature: commonValidationFieldRequiered,
+        mainFeatures: [
+            ...commonValidationFieldRequiered,
+            {
+                validator: arrayRequired.validator,
+                customArgs: { minLength: 1, maxLength: 6 },
+                message: 'Debe añadir al menos una característica',
+            }
+        ],
+        
         equipments: [
                 {
                     validator: arrayRequired.validator,
