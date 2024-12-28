@@ -25,6 +25,7 @@ export const mapNewPropertyFromViewModelToApi = ( newProperty) => {
         ...newProperty,
         price: Number(newProperty.price),
         equipmentId: newProperty.equipments,
+        images: newProperty["add-image"],
     }
     return newProperty.map( ({ newFeature, ...rest}) => rest ) 
 }

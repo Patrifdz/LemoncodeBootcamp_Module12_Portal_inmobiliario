@@ -1,8 +1,8 @@
 import { history, routes } from '../../core/router';
-import { onUpdateField, onSetError, onSubmitForm, onSetFormErrors } from '../../common/helpers/element.helpers';
+import { onUpdateField, onSetError, onSubmitForm, onSetFormErrors, onAddFile } from '../../common/helpers/element.helpers';
 import { formValidation } from './upload-property.validations';
 import { getSaleTypeList, getProvincesList, getEquipmentList, getPropertiesList, sendDataNewProperty } from './upload-property.api';
-import { formatCheckboxId, setCheckboxList, setOptionList, onAddFeature, formatDeleteFeatureButtonId, onRemoveFeature } from './upload-property.helpers';
+import { formatCheckboxId, setCheckboxList, setOptionList, onAddFeature, formatDeleteFeatureButtonId, onRemoveFeature, onAddImage } from './upload-property.helpers';
 import { mapNewPropertyFromViewModelToApi } from './upload-property.mapper';
 
 /*
@@ -53,11 +53,11 @@ let newProperty = {
     locationUrl: '',
     mainFeatures: [ ],
     equipments: [ ],
-    images: '',
+    "add-image": '',
 }
 
 
-const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'equipments', 'images'];
+const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'equipments', 'add-image'];
 
 const buttonId = ['insert-feature-button', 'save-button'];
 
@@ -76,7 +76,7 @@ fieldId.forEach( field => {
                         [field]: newProperty[field].filter( num => num !== value ),
                     }
                 }
-             } else {
+             }  else if (field !== 'add-image') {
             newProperty = {
                 ...newProperty,
                 [field]: value,
@@ -86,7 +86,16 @@ fieldId.forEach( field => {
         onSetError(field, result)
     })
     })
+    onAddFile(field, value => {
+        onAddImage(value);
+        newProperty = {
+            ...newProperty,
+            [field] : value,
+        }
+    })
 });
+
+
 
 buttonId.forEach( button => {
     if(button === 'insert-feature-button') {
@@ -108,6 +117,7 @@ buttonId.forEach( button => {
             formValidation.validateForm(newProperty).then(result => {
                 console.log(result)
                 onSetFormErrors(result);
+                console.log(newProperty)
         
                 if (result.succeeded) {
                     // mapeamos la nueva propiedad y enviamos los datos a la API
@@ -120,7 +130,7 @@ buttonId.forEach( button => {
                 }
             });
         });
-    } 
+        } 
 });
 
 
