@@ -63,7 +63,6 @@ fieldId.forEach( field => {
     onUpdateField(field, event => {
         const value = event.target.value;
         const saleTypesId = event.target.id;
-        console.log(event.target.id)
             if(field === 'saleTypes' || field === 'equipments') {
                         if(newProperty[field].indexOf(value) === -1) {
                         newProperty = {
@@ -123,10 +122,7 @@ buttonId.forEach( button => {
         onSubmitForm(button, () => {
             // Se validan los datos del formulario de la nueva propiedad al clickar el botón de Guardar
             formValidation.validateForm(newProperty).then(result => {
-                console.log(result)
                 onSetFormErrors(result);
-                console.log(newProperty)
-                console.log(mapNewPropertyFromViewModelToApi(newProperty))
         
                 if (result.succeeded) {
                     // Si el resultado es true:
