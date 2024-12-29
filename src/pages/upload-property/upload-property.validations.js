@@ -79,12 +79,16 @@ const validationSchema = {
         bathrooms: commonValidationFieldRequiered,
         locationUrl: [
             ...commonValidationFieldRequiered,
-            {
-                validator: isUrl.validator,
+            // {
+            //     validator: isUrl.validator,
+            //     message: 'La dirección url indicada no es correcta',
+            //   },
+              {
+                validator: Validators.pattern,
+                customArgs: { pattern: new RegExp(/^https:\/\/www\.google\.com\/maps/) },
                 message: 'La dirección url indicada no es correcta',
-              },
+            }
         ], 
-        newFeature: commonValidationFieldRequiered,
         mainFeatures: [
             ...commonValidationFieldRequiered,
             {
