@@ -1,115 +1,100 @@
 import { Validators, createFormValidation } from '@lemoncode/fonk';
 import { arrayRequired } from '@lemoncode/fonk-array-required-validator';
-import { isUrl } from '@lemoncode/fonk-is-url-validator';
 
 
-const commonValidationFieldRequiered =  [
+const commonValidations = {
+    required: [
         {
             validator: Validators.required,
             message: 'Campo requerido',
-        } 
-    ];
-
-const commonValidationGreaterZero = [
+        }
+    ],
+    greaterZero: [
         {
             validator: Validators.pattern,
             customArgs: { pattern: /^[+]?[1-9]\d*(\.\d+)?$/ },
             message: 'El número debe ser mayor que cero'
         }
-];
-
-    const commonValidationMaxLength = (amount ) => [
+    ],
+    maxLength: (amount) => [
         {
             validator: Validators.maxLength,
             customArgs: { length: amount },
             message: 'La longitud máxima son {{length}} caracteres',
         }
-    ];
+    ],
+    email: [
+        {
+            validator: Validators.email,
+            message: 'Email no válido',
+        }
+    ],
+    phone: [
+        {
+            validator: Validators.pattern,
+            customArgs: { pattern: new RegExp(/^(6|7|8|9)\d{8}$/) },
+            message: 'Teléfono no válido'
+        }
+    ],
+    arrayRequired : (min, max, message) => [
+        {
+            validator: arrayRequired.validator,
+            customArgs: { minLength: min, maxLength: max },
+            message: message,
+        }
+    ],
+    locationUrl: [
+        {
+            validator: Validators.pattern,
+            customArgs: { pattern: new RegExp(/^https:\/\/www\.google\.com\/maps/) },
+            message: 'La dirección url indicada no es correcta',
+        }
+    ],
+};
 
 const validationSchema = {
     field: {
             title: [
-            ...commonValidationFieldRequiered,
-            ...commonValidationMaxLength(64),
+            ...commonValidations.required,
+            ...commonValidations.maxLength(64),
         ],
         notes: [
-            ...commonValidationFieldRequiered,
-            ...commonValidationMaxLength(1000),
+            ...commonValidations.required,
+            ...commonValidations.maxLength(1000),
         ],
         email: [
-            ...commonValidationFieldRequiered,
-            {
-                validator: Validators.email,
-                message: 'Email no válido',
-            }
+            ...commonValidations.required,
+            ...commonValidations.email,
         ],
         phone: [
-            ...commonValidationFieldRequiered,
-            {
-                validator: Validators.pattern,
-                customArgs: { pattern: new RegExp(/^(6|7|8|9)\d{8}$/) },
-                message: 'Teléfono no válido'
-            }
+            ...commonValidations.required,
+            ...commonValidations.phone,
         ],
         price: [
-            ...commonValidationFieldRequiered,
-            ...commonValidationGreaterZero,
+            ...commonValidations.required,
+            ...commonValidations.greaterZero,
         ],
-        saleTypes: [
-            {
-                validator: arrayRequired.validator,
-                customArgs: { minLength: 1, maxLength: 4 },
-                message: 'Debe marcar al menos una de las opciones',
-            }
-        ],
+        saleTypes: commonValidations.arrayRequired(1, 4, 'Debe marcar al menos una de las opciones'),
         address: [
-            ...commonValidationFieldRequiered,
-            ...commonValidationMaxLength(54),
+            ...commonValidations.required,
+            ...commonValidations.maxLength(54),
         ],
         city: [
-            ...commonValidationFieldRequiered,
-            ...commonValidationMaxLength(24),
+            ...commonValidations.required,
+            ...commonValidations.maxLength(24),
         ],
-        province:  commonValidationFieldRequiered,
+        province:  commonValidations.required,
         squareMeter: [
-            ...commonValidationFieldRequiered,
-            ...commonValidationGreaterZero,
+            ...commonValidations.required,
+            ...commonValidations.greaterZero,
         ],
-        rooms: commonValidationFieldRequiered,
-        bathrooms: commonValidationFieldRequiered,
+        rooms: commonValidations.required,
+        bathrooms: commonValidations.required,
         locationUrl: [
-            ...commonValidationFieldRequiered,
-            // {
-            //     validator: isUrl.validator,
-            //     message: 'La dirección url indicada no es correcta',
-            //   },
-              {
-                validator: Validators.pattern,
-                customArgs: { pattern: new RegExp(/^https:\/\/www\.google\.com\/maps/) },
-                message: 'La dirección url indicada no es correcta',
-            }
+            ...commonValidations.required,
+            ...commonValidations.locationUrl,
         ], 
-        mainFeatures: [
-            ...commonValidationFieldRequiered,
-            {
-                validator: arrayRequired.validator,
-                customArgs: { minLength: 1, maxLength: 6 },
-                message: 'Debe añadir al menos una característica',
-            }
-        ],
-        
-        equipments: [
-                {
-                    validator: arrayRequired.validator,
-                    customArgs: { minLength: 0, maxLength: 6 },
-                }
-            ],
-        images: [
-            {
-                validator: arrayRequired.validator,
-                customArgs: { minLength: 1},
-            }
-        ],
+        mainFeatures: commonValidations.arrayRequired(1, 6, 'Debe añadir al menos una característica'),
     }
 };
 
