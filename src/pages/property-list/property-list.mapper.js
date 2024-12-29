@@ -49,7 +49,7 @@ export const mapFilterToQueryParams = filter => {
     if(filter.minPrice) {
         queryParams = `${queryParams}price_gte=${filter.minPrice}&`;
     }
-    if(filter.minPrice) {
+    if(filter.maxPrice) {
         queryParams = `${queryParams}price_lte=${filter.maxPrice}&`;
     }
     return queryParams.slice(0, -1);
