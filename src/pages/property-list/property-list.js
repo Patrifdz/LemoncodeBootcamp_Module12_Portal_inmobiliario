@@ -1,4 +1,4 @@
-import { getPropertyList, getSaleTypeList, getProvinceList} from './property-list.api';
+import { getPropertyList, getSaleTypeList, getProvinceList } from '../../common/helpers/element.api';
 import { mapPropertyListFromApiToViewModel, mapFilterToQueryParams } from './property-list.mapper';
 import { addPropertyRows, setOptions, clearPropertyRows } from './property-list.helpers';
 import { roomOptions, bathroomOptions, minPriceOptions, maxPriceOptions } from './property-list.constants';

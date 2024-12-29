@@ -1,8 +1,8 @@
 import { history, routes } from '../../core/router';
 import { onUpdateField, onSetError, onSubmitForm, onSetFormErrors, onAddFile } from '../../common/helpers/element.helpers';
 import { formValidation } from './upload-property.validations';
-import { getSaleTypeList, getProvincesList, getEquipmentList, getPropertiesList, sendDataNewProperty } from './upload-property.api';
-import { formatCheckboxId, setCheckboxList, setOptionList, onAddFeature, formatDeleteFeatureButtonId, onRemoveFeature, onAddImage } from './upload-property.helpers';
+import { getSaleTypeList, getProvinceList, getEquipmentList, sendDataNewProperty } from '../../common/helpers/element.api';
+import { setCheckboxList, setOptionList, onAddFeature, formatDeleteFeatureButtonId, onRemoveFeature, onAddImage } from './upload-property.helpers';
 import { mapNewPropertyFromViewModelToApi } from './upload-property.mapper';
 
 /*
@@ -29,7 +29,7 @@ upload-property: {
 
 Promise.all( [
     getSaleTypeList( ),
-    getProvincesList( ),
+    getProvinceList( ),
     getEquipmentList( ),
 ]).then( ( [saleTypeList, provinceList, equipmentList] )  => {
     setCheckboxList(saleTypeList, 'saleTypes')

@@ -1,7 +1,7 @@
 import { history, routes } from '../../core/router';
 import { mapPropertyDetailFromApiToViewModel } from './property-detail.mapper';
 import { setPropertyValues } from './property-detail.helpers';
-import { getPropertyList, getEquipmentList, sendContactData } from './property-detail.api';
+import { getPropertyList, getEquipmentList, sendContactData } from '../../common/helpers/element.api';
 import { onUpdateField, onSetError, onSubmitForm, onSetFormErrors } from '../../common/helpers/element.helpers';
 import { formValidation } from './property-detail.validations';
 
