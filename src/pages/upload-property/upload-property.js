@@ -56,9 +56,7 @@ let newProperty = {
     images: [ ],
 }
 
-
-const fieldId = [ 'title', 'notes', 'email', 'phone', 'price', 'saleTypes', 'address', 'city', 'province', 'squareMeter', 'rooms', 'bathrooms', 'locationUrl', 'newFeature', 'mainFeatures', 'equipments', 'images'];
-
+const fieldId = [...Object.keys(newProperty), 'newFeature'];
 const buttonId = ['insert-feature-button', 'save-button'];
 
 fieldId.forEach( field => {
@@ -123,6 +121,7 @@ buttonId.forEach( button => {
         })
     } else if (button === 'save-button') {
         onSubmitForm(button, () => {
+            // Se validan los datos del formulario de la nueva propiedad al clickar el botón de Guardar
             formValidation.validateForm(newProperty).then(result => {
                 console.log(result)
                 onSetFormErrors(result);
@@ -130,6 +129,7 @@ buttonId.forEach( button => {
                 console.log(mapNewPropertyFromViewModelToApi(newProperty))
         
                 if (result.succeeded) {
+                    // Si el resultado es true:
                     // mapeamos la nueva propiedad y enviamos los datos a la API
                     sendDataNewProperty(mapNewPropertyFromViewModelToApi(newProperty)).then(() => {
                     // Después de enviar los datos con éxito, redirigimos a la lista de propiedades
@@ -143,23 +143,3 @@ buttonId.forEach( button => {
         } 
 });
 
-
-
-
-
-
-
-
-
-
-
-// onUpdateField('title', event => {
-//     const value = event.target.value;
-//         newProperty = {
-//             ...newProperty,
-//             title: value,
-//         }
-//     formValidation.validateField('title', newProperty.title).then((result) => {
-//         onSetError('title', result)
-//     })
-// })
