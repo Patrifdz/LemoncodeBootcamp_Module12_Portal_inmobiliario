@@ -81,7 +81,7 @@ export const onRemoveFeature = feature => {
 };
 
 export const onAddImage = image => {
-  const imagesElement = document.getElementById('images');
+  const imagesElement = document.getElementById('images-div');
   const addImageButton = document.getElementById('add-image-button');
 
   const imageContainerElement = document.createElement('div');

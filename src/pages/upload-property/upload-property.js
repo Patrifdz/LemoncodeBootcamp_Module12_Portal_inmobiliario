@@ -76,7 +76,7 @@ fieldId.forEach( field => {
                                 [field]: newProperty[field].filter( num => num !== value ),
                             }
                         }
-            }  else if (field !== 'add-image') {
+            }  else if (field !== 'images') {
                     newProperty = {
                         ...newProperty,
                         [field]: value,
@@ -87,7 +87,7 @@ fieldId.forEach( field => {
             } 
     });
 
-    if(field === 'add-image') {
+    if(field === 'images') {
         onAddFile(field, value => {
         onAddImage(value);
         newProperty = {
