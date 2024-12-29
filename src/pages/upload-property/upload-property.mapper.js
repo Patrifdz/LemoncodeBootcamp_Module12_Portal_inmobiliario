@@ -20,16 +20,6 @@ newProperty {
     }
 */
 
-// export const mapNewPropertyFromViewModelToApi = ( newProperty) => {
-//     newProperty = {
-//         ...newProperty,
-//         price: Number(newProperty.price),
-//         provinceId: newProperty.pronvince,
-//         equipmentId: newProperty.equipments,
-//         images: newProperty["add-image"],
-//     }
-//     return newProperty.map( ({ newFeature, ...rest}) => rest )
-// }
 export const mapNewPropertyFromViewModelToApi = (newProperty) => {
     const updatedProperty = {
         ...newProperty,
@@ -37,17 +27,10 @@ export const mapNewPropertyFromViewModelToApi = (newProperty) => {
         squareMeter: Number(newProperty.squareMeter),
         rooms: Number(newProperty.rooms),
         bathrooms: Number(newProperty.bathrooms),
-        provinceId: newProperty.province, // Corregido "pronvince" a "province"
-        equipmentId: newProperty.equipments,
+        provinceId: newProperty.province, 
+        equipmentIds: newProperty.equipments,
     };
 
-    // Si necesitas eliminar "newFeature", puedes filtrar las claves:
-    const { newFeature,  ...rest } = updatedProperty;
-    return rest; // Devuelve el objeto sin "newFeature".
+    const { newFeature, equipments,  ...rest } = updatedProperty;
+    return rest; // Devuelve el objeto sin "newFeature" y sin 'equipments' ya que estas propiedades no se usan en el objeto final guardado en servidor
 };
-
-
-// He intentado machacar la propiedad 'id' que se genera automáticamente al crear la nueva propiedad, pero no me deja hacerlo. Quería asignarle un número que fuese continuación del número de id que tuviese la última propiedad de la lista. 
-// const setId = (ListProperties) => {
-//     return ListProperties.length + 1;
-// }

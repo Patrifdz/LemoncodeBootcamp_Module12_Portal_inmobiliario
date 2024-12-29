@@ -64,6 +64,8 @@ const buttonId = ['insert-feature-button', 'save-button'];
 fieldId.forEach( field => {
     onUpdateField(field, event => {
         const value = event.target.value;
+        const saleTypesId = event.target.id;
+        console.log(event.target.id)
             if(field === 'saleTypes' || field === 'equipments') {
                         if(newProperty[field].indexOf(value) === -1) {
                         newProperty = {
@@ -84,7 +86,9 @@ fieldId.forEach( field => {
             }   
             if (field !== 'saleTypes') {
                     formValidation.validateField( field, value).then( result => onSetError(field, result))
-            } 
+            } else {
+                formValidation.validateField(saleTypesId, newProperty.field).then ( result => onSetError(field, result));
+            }
     });
 
     if(field === 'images') {
@@ -92,7 +96,7 @@ fieldId.forEach( field => {
         onAddImage(value);
         newProperty = {
             ...newProperty,
-            [field] : value,
+            [field]: [...newProperty[field], value],
         }
         })
     }
@@ -114,6 +118,7 @@ buttonId.forEach( button => {
                     onRemoveFeature(value);
                     newProperty.mainFeatures = newProperty.mainFeatures.filter(feature => feature !== value);
                 })
+                formValidation.validateField( 'mainFeatures', newProperty.mainFeatures).then( result => onSetError('mainFeatures', result))
             }
         })
     } else if (button === 'save-button') {
